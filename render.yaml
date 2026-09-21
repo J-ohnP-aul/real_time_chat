@@ -1,4 +1,13 @@
+databases:
+  - name: real-time-chat-db
+    databaseName: real_time_chat
+    user: real_time_chat
+    plan: free
+
 services:
+  - type: redis
+    name: real-time-chat-redis
+    plan: free
   - type: web
     name: real-time-chat
     env: python
@@ -22,13 +31,3 @@ services:
         value: "False"
       - key: ALLOWED_HOSTS
         value: ".onrender.com"
-
-databases:
-  - name: real-time-chat-db
-    databaseName: real_time_chat
-    user: real_time_chat
-    plan: free
-
-redis:
-  - name: real-time-chat-redis
-    plan: free
