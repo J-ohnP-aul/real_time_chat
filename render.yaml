@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: real-time-chat
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: daphne -b 0.0.0.0 -p $PORT config.asgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: real-time-chat-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: real-time-chat-redis
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+
+databases:
+  - name: real-time-chat-db
+    databaseName: real_time_chat
+    user: real_time_chat
+    plan: free
+
+redis:
+  - name: real-time-chat-redis
+    plan: free
